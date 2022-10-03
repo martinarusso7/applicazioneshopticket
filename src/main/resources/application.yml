@@ -13,7 +13,7 @@ spring:
 server:
   port: 8080
 
-  azure:
+azure:
   key-vault:
     enabled: true
     uri: https://credenzialishopticket.vault.azure.net/
