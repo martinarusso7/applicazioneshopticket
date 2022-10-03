@@ -1,4 +1,4 @@
-package ShopTicket.config;
+/*package ShopTicket.config;
 
 import java.awt.image.BufferedImage;
 
@@ -88,3 +88,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 }
+*/
