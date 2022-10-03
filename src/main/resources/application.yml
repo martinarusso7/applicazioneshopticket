@@ -1,22 +1,22 @@
 spring:
   datasource:
-    url: ${Url}:3306/${DB-Name}?useSSL=true
-    username: ${DB-Username}
-    password: ${DB-Password}
+    url: jdbc:mysql://credenzialishopticket.vault.azure.net:3306/shopticket?useSSL=true
+    username: martina
+    password: Casola7.
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
       dialect : org.hibernate.dialect.MySQLInnoDBDialect
 
-
 server:
   port: 8080
 
-azure:
-  key-vault:
-    enabled: true
-    uri: https://credenzialishopticket.vault.azure.net/
-    client-id: 731a04f7-bd4d-488a-965e-3f2484cbfd04
-    client-key: 16a1075a-12e1-4fd0-9309-05a0d5da8e04
-    tenant-id: 2fcfe26a-bb62-46b0-b1e3-28f9da0c45fd
+#azure:
+ # key-vault:
+  #  enabled: true
+   # uri: https://credenzialishopticket.vault.azure.net/
+    #client-id: 731a04f7-bd4d-488a-965e-3f2484cbfd04
+    #client-key: 16a1075a-12e1-4fd0-9309-05a0d5da8e04
+    #tenant-id: 2fcfe26a-bb62-46b0-b1e3-28f9da0c45fd
+
