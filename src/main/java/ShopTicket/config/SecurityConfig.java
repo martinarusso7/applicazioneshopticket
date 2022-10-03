@@ -75,8 +75,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http
                 .authorizeRequests()
-                .antMatchers("/homemia").hasRole("Member")
-                .antMatchers("/home-admin-mia").hasRole("Admin")
+                .antMatchers("/homepage").hasRole("Member")
+                .antMatchers("/home-admin").hasRole("Admin")
                 .anyRequest().permitAll()
                 .and()
                 .logout()
