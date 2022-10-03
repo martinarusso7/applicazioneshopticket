@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-sprinsecurity5">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{images/mio.css}">
+  <title>Home</title>
+</head>
+
+<body class="text-center" th:style="'background: url(/images/3040030120-0.jpeg); background-size: cover;'">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" style="color: white" href="#">ShopTicket</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" style="color: white" th:href="@{/homepage}">Home
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: white" th:href="@{/homepage/riepilogo-acquisti}">Riepilogo Acquisti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: white" th:href="@{/homepage/carica-saldo}">Carica Saldo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: white">Saldo disponibile:</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: white" th:text="*{saldo}" ></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <li class="nav-item dropdown">
+    <div sec:authorize="isAuthenticated()">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><b>Benvenuto <span th:text="*{nome}"></span></b></a>
+    <div class="dropdown-menu" style="left: -65px!important;">
+      <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+    </div>
+    </div>
+  </li>
+</nav>
+
+<div th:if="${param.success}">
+  <div class="alert alert-info">Registrazione effettuata correttamente.</div>
+</div>
+
+<div class="movie_card" id="bright" th:each="evento: ${eventi}">
+  <div class="info_section">
+    <div class="movie_header">
+      <img class="locandina" th:src="@{'images/'+${evento.urlimm}}"/>
+    </div>
+
+    <div class="movie_desc">
+      <h1 th:text="${evento.nome}"></h1>
+      <p th:text="${evento.descrizione}"></p>
+      <a class="btn btn-primary" th:href="@{/homepage/visualizza-biglietti-user/{id}(id=${evento.id})}">Visualizza</a>
+    </div>
+
+  </div>
+  <div class="blur_back bright_back"></div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800");
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+html, body {
+    margin: 0;
+    background: white;
+    font-family: "Montserrat", helvetica, arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+.link {
+    display: block;
+    text-align: center;
+    color: #777;
+    text-decoration: none;
+    padding: 10px;
+}
+.movie_card {
+    position: relative;
+    display: block;
+    width: 800px;
+    height: 350px;
+    margin: 80px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all 0.4s;
+    box-shadow: 0px 0px 120px -25px rgba(0, 0, 0, 0.5);
+}
+.movie_card:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 0px 80px -25px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s;
+}
+.movie_card .info_section {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-blend-mode: multiply;
+    z-index: 2;
+    border-radius: 10px;
+}
+.movie_card .info_section .movie_header {
+    position: relative;
+    padding: 25px;
+    height: 40%;
+}
+.movie_card .info_section .movie_header h1 {
+    color: black;
+    font-weight: 400;
+}
+.movie_card .info_section .movie_header h4 {
+    color: #555;
+    font-weight: 400;
+}
+.movie_card .info_section .movie_header .minutes {
+    display: inline-block;
+    margin-top: 15px;
+    color: #555;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.movie_card .info_section .movie_header .type {
+    display: inline-block;
+    color: #959595;
+    margin-left: 10px;
+}
+.movie_card .info_section .movie_header .locandina {
+    float: right;
+    margin-right: 170px;
+    height: 170px;
+    box-shadow: 0 0 50px -10px rgba(0, 0, 0, 2);
+}
+.movie_card .info_section .movie_desc {
+    padding: 25px;
+    height: 50%;
+}
+.movie_card .info_section .movie_desc .text {
+    color: darkorchid ;
+}
+.movie_card .info_section .movie_social {
+    height: 10%;
+    padding-left: 15px;
+    padding-bottom: 20px;
+}
+.movie_card .info_section .movie_social ul {
+    list-style: none;
+    padding: 0;
+}
+.movie_card .info_section .movie_social ul li {
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.3);
+    transition: color 0.3s;
+    transition-delay: 0.15s;
+    margin: 0 10px;
+}
+.movie_card .info_section .movie_social ul li:hover {
+    transition: color 0.3s;
+    color: rgba(0, 0, 0, 0.7);
+}
+.movie_card .info_section .movie_social ul li i {
+    font-size: 19px;
+    cursor: pointer;
+}
+.movie_card .blur_back {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    height: 100%;
+    right: 0;
+    background-size: cover;
+    border-radius: 11px;
+}
+@media screen and (min-width: 768px) {
+    .movie_header {
+        width: 65%;
+    }
+    .movie_desc {
+        width: 50%;
+    }
+    .info_section {
+        background: linear-gradient(to right, #e5e6e6 50%, transparent 100%);
+    }
+    .blur_back {
+        width: 80%;
+        background-position: -100% 10% !important;
+    }
+}
+@media screen and (max-width: 768px) {
+    .movie_card {
+        width: 95%;
+        margin: 70px auto;
+        min-height: 350px;
+        height: auto;
+    }
+    .blur_back {
+        width: 100%;
+        background-position: 50% 50% !important;
+    }
+    .movie_header {
+        width: 100%;
+        margin-top: 85px;
+    }
+    .movie_desc {
+        width: 100%;
+    }
+    .info_section {
+        background: linear-gradient(to top, #e5e6e6 50%, transparent 100%);
+        display: inline-grid;
+    }
+}
+.bright_back {
+    background: url("https://www.stateofmind.it/wp-content/uploads/2021/06/Concerti-live-e-musica-registrata-differenze-nel-coinvolgimento-del-pubblico.jpeg");
+}
+
+.materie{
+    position: relative;
+    top: 450px; left: 500px;
+    width: 1500px!important;
+}
+
+.btn-secondary{
+    border-color: #0d6efd!important;
+    background-color: #0d6efd!important;
+    position: relative;
+    right: 50px;
+}
+
+
+
+.btn-grey{
+    border-color: grey!important;
+    background-color: grey!important;
+}
+
+.bg-primary:hover{
+    color: white;
+}
+
+.bg-danger{
+    position: absolute;
+    left: 520px; bottom: 573px;
+    height: 180px;
+}
+
+.bg-warning{
+    position: absolute;
+    left: 520px; bottom: 378px;
+    height: 180px;
+}
+
+.bg-info{
+    position: absolute;
+    left: 850px; bottom: 572px;
+    height: 180px;
+}
+
+.bg-light{
+    position: absolute;
+    left: 850px; bottom: 378px;
+    height: 180px;
+}
+
+
+
+.btn-danger:focus{
+    border:none;
+}
+
+li{
+    list-style: none;
+}
+
+.nav-link.dropdown-toggle{
+    color: white!important;
+    position: relative;
+    right:  70px;
+}
+
+.nav-link:hover{
+    color: white;
+}
+
+a{
+    color: white;
+}
+
+
