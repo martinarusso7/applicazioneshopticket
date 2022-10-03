@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: $(Url):3306/$(DB-Name)?useSSL=true
-    username: $(DB-Username)
-    password: $(DB-Password)
+    url: ${Url}:3306/${DB-Name}?useSSL=true
+    username: ${DB-Username}
+    password: ${DB-Password}
   jpa:
     show-sql: true
     hibernate:
