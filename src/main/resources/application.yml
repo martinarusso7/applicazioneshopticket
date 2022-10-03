@@ -17,6 +17,6 @@ server:
   key-vault:
     enabled: true
     uri: https://credenzialishopticket.vault.azure.net/
-    client-id: 731a04f7-bd4d-488a-965e-3f2484cbfd04
+    client-id: 61c44725-383c-43a3-93c9-30e94374ec15
     ##client-key: V.q~NOT7o.KH5A4n2G9fbO3Rl4K~yTvx-z
     tenant-id: 2fcfe26a-bb62-46b0-b1e3-28f9da0c45fd
