@@ -157,11 +157,11 @@ public class UserHomepageController {
                         user_key.setSaldo(saldo - biglietto.getCosto());
                         biglietto.setNum_posti_disponibili(biglietto.getNum_posti_disponibili() - 1);
                         Acquisto acquisto = new Acquisto(Calendar.getInstance().getTime().toString(), "valido");
-                        bigliettoService.saves(biglietto);
+                        bigliettoRepository.save(biglietto);
                         user_keyRepository.save(user_key);
                         acquisto.setBiglietto(biglietto);
-                        //acquisto.setUtente(id_utente);
-                        acquistoService.saves(acquisto);
+                        //acquisto.setId(id_utente);
+                        acquistoRepository.save(acquisto);
 
                         return "redirect:/homepage/visualizza-biglietti-user/" + idevento + "?success0";
                     } else
