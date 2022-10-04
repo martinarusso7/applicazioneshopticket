@@ -3,10 +3,7 @@ package ShopTicket.controller;
 import ShopTicket.controller.dto.ListaAcquistiDto;
 import ShopTicket.controller.dto.SaldoDto;
 import ShopTicket.controller.dto.User_KeyDto;
-import ShopTicket.model.Acquisto;
-import ShopTicket.model.Biglietto;
-import ShopTicket.model.Evento;
-import ShopTicket.model.Utente;
+import ShopTicket.model.*;
 import ShopTicket.repository.*;
 import ShopTicket.service.*;
 import org.keycloak.KeycloakSecurityContext;
@@ -136,28 +133,34 @@ public class UserHomepageController {
 
     @GetMapping("/effettua-acquisto/{id}/{idevento}")
     public String acquista(@PathVariable(value = "id") long id, @PathVariable(value = "idevento") long idevento) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
 
-            String email = auth.getName();
-            Utente utente = userService.loadUserByEmail(email);
-            long iduser = utente.getId();
-            long idbiglietto = id;
-            Biglietto biglietto = bigliettoService.loadBigliettoById(idbiglietto);
+            //String email = auth.getName();
+            //Utente utente = userService.loadUserByEmail(email);
+            //long iduser = utente.getId();
+            //long idbiglietto = id;
 
-            if (!acquistoService.acquisto_exist(iduser, idbiglietto)) {
+            final String id_utente = getSecurityContext().getToken().getPreferredUsername();
+            float saldo = user_keyService.loadUserByKey(id_utente).getSaldo();
+            User_Key user_key = user_keyService.loadUserByKey(id_utente);
+
+            long idcors = id;
+            Biglietto biglietto = bigliettoService.loadBigliettoById(id);
+
+            if (!acquistoService.acquisto_exist(id_utente, idcors)) {
 
                 if (biglietto.getNum_posti_disponibili() > 0) {
 
-                    if (utente.getSaldo() >= biglietto.getCosto()) {
+                    if (saldo >= biglietto.getCosto()) {
 
-                        utente.setSaldo(utente.getSaldo() - biglietto.getCosto());
+                        user_key.setSaldo(saldo - biglietto.getCosto());
                         biglietto.setNum_posti_disponibili(biglietto.getNum_posti_disponibili() - 1);
                         Acquisto acquisto = new Acquisto(Calendar.getInstance().getTime().toString(), "valido");
                         bigliettoService.saves(biglietto);
-                        userService.saves(utente);
+                        user_keyRepository.save(user_key);
                         acquisto.setBiglietto(biglietto);
-                        acquisto.setUtente(utente);
+                        acquisto.setUtente(id_utente);
                         acquistoService.saves(acquisto);
 
                         return "redirect:/homepage/visualizza-biglietti-user/" + idevento + "?success0";
@@ -167,28 +170,32 @@ public class UserHomepageController {
                     return "redirect:/homepage/visualizza-biglietti-user/" + idevento + "?error2";
 
             } else return "redirect:/homepage/visualizza-biglietti-user/" + idevento + "?error1";
-        } else
-            return "redirect:/login";
+       // } else
+         //   return "redirect:/login";
     }
 
     @GetMapping("/visualizza-biglietti-user/{id}")
     public String showbiglietti(@PathVariable(value = "id") long id, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
+       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+       // if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
 
             Evento evento = eventoService.loadEventobyid(id);
             ArrayList<Biglietto> biglietti = bigliettoService.loadBigliettobyEvento(evento.getId());
-            String email = auth.getName();
-            Utente utente = userService.loadUserByEmail(email);
-            model.addAttribute("nome", utente.getNome());
-            model.addAttribute("saldo", utente.getSaldo());
+            // String email = auth.getName();
+
+            final String nome = getSecurityContext().getToken().getName();
+            final float saldo = user_keyService.loadUserByKey(getSecurityContext().getToken().getPreferredUsername()).getSaldo();
+
+            //Utente utente = userService.loadUserByEmail(email);
+            model.addAttribute("nome", nome);
+            model.addAttribute("saldo", saldo);
             model.addAttribute("evento", evento);
             model.addAttribute("biglietti", biglietti);
             model.addAttribute("id", id);
 
             return "visualizza-biglietti-user";
-        } else
-            return "redirect:/login";
+        //} else
+         //   return "redirect:/login";
     }
 
 
@@ -200,56 +207,44 @@ public class UserHomepageController {
 
     @GetMapping("/carica-saldo")
     public String carica_saldo(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
 
-            String email = auth.getName();
-            Utente utente = utenteRepository.findByEmail(email);
-            model.addAttribute("nome", utente.getNome());
-            model.addAttribute("saldo", utente.getSaldo());
+            //String email = auth.getName();
+            //Utente utente = utenteRepository.findByEmail(email);
+
+            final String nome = getSecurityContext().getToken().getName();
+            final float saldo = user_keyService.loadUserByKey(getSecurityContext().getToken().getPreferredUsername()).getSaldo();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("saldo", saldo);
             return "carica-saldo";
-        } else return "redirect:/login";
+        //} else return "redirect:/login";
     }
 
     @PostMapping("/carica-saldo")
     public String soldi(Model model, @ModelAttribute("ricaric") SaldoDto saldoDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
 
             // Prendo l'ammontare della ricarica inserito e lo aggiungo al saldo dell'utente
-            String email = auth.getName();
-            Utente utente = utenteRepository.findByEmail(email);
-            model.addAttribute("nome", utente.getNome());
-            model.addAttribute("saldo", utente.getSaldo());
+            //String email = auth.getName();
+            //Utente utente = utenteRepository.findByEmail(email);
+            final String nome = getSecurityContext().getToken().getName();
+            User_Key user_key = user_keyService.loadUserByKey(getSecurityContext().getToken().getPreferredUsername());
+            final float saldo = user_keyService.loadUserByKey(getSecurityContext().getToken().getPreferredUsername()).getSaldo();
+            model.addAttribute("nome",nome);
+            model.addAttribute("saldo",saldo);
 
-            float temp = utente.getSaldo();
-            utente.setSaldo(temp + saldoDto.getRicarica());
-            utenteRepository.save(utente);
+
+            user_key.setSaldo(saldo+saldoDto.getRicarica());
+            user_keyRepository.save(user_key);
 
             return "redirect:/homepage/carica-saldo?success0";
-        } else
-            return "redirect:/login";
+       // } else
+         //   return "redirect:/login";
     }
 
-    // DA IMPLEMENTARE
-    /*@GetMapping("/rivendibiglietto/{evento}")
-    public String rivendibiglietto(@PathVariable(value = "evento") String evento) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
-
-            String email = auth.getName();
-            Utente utente = utenteRepository.findByEmail(email);
-            Long idutente = utente.getId();
-
-            ArrayList<Acquisto> acquisti = acquistoRepository.findByIdUtente(idutente);
-
-            System.out.println(acquisti);
-
-            return "riepilogo-acquisti";
-        }
-        return "redirect:/login";
-
-    }*/
 
 }
 

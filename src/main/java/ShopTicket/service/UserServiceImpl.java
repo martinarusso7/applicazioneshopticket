@@ -2,6 +2,7 @@ package ShopTicket.service;
 
 import ShopTicket.controller.dto.UserRegistrationDto;
 import ShopTicket.model.Ruolo;
+import ShopTicket.model.User_Key;
 import ShopTicket.model.Utente;
 import ShopTicket.repository.RuoloRepository;
 import ShopTicket.repository.UtenteRepository;
@@ -38,14 +39,15 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl() {
     }
 
-    public Utente save(UserRegistrationDto registrationDto) {
+    /*public Utente save(UserRegistrationDto registrationDto) {
         Utente user = new Utente(registrationDto.getCf(), registrationDto.getNome(), registrationDto.getCognome(), registrationDto.getData_nascita(), registrationDto.getGenere(), registrationDto.getEmail(),registrationDto.getIndirizzo(),registrationDto.getTelefono(), passwordEncoder.encode(registrationDto.getPassword()), 0, Arrays.asList(ruoloRepository.findByNome(registrationDto.getRuolo())),registrationDto.getRuolo());
         return utenteRepository.save(user);
-    }
+    }*/
 
     @Override
-    public Utente saves(Utente utente) {
-        return utenteRepository.save(utente);
+    public Utente saves(String id_key,UserRegistrationDto registrationDto) {
+        Utente user = new Utente(id_key,registrationDto.getCf(), registrationDto.getNome(), registrationDto.getCognome(), registrationDto.getData_nascita(), registrationDto.getGenere(), registrationDto.getEmail(),registrationDto.getIndirizzo(),registrationDto.getTelefono(), passwordEncoder.encode(registrationDto.getPassword()), 0, Arrays.asList(ruoloRepository.findByNome(registrationDto.getRuolo())),registrationDto.getRuolo());
+        return utenteRepository.save(user);
     }
 
     public boolean email_exists(UserRegistrationDto registrationDto) {

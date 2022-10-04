@@ -15,6 +15,9 @@ public class Utente {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "id_key")
+    private String id_key;
+
     @Column(name = "cf",nullable=false,unique = true,length = 16)
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private String cf;
@@ -67,7 +70,8 @@ public class Utente {
     public Utente() {
     }
 
-    public Utente(String cf, String nome, String cognome, String data_nascita, String genere, String email, String indirizzo, String telefono, @NonNull String password, float saldo,Collection<Ruolo> ruoli,String ruolo) {
+    public Utente(String id_key,String cf, String nome, String cognome, String data_nascita, String genere, String email, String indirizzo, String telefono, @NonNull String password, float saldo,Collection<Ruolo> ruoli,String ruolo) {
+        this.id_key=id_key;
         this.cf = cf;
         this.nome = nome;
         this.cognome = cognome;

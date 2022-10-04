@@ -30,10 +30,8 @@ public class Acquisto {
     @Column(name = "stato",nullable = false,length = 20)
     private String stato;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_utente", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Utente utente;
+    @Column(name= "utente",nullable =false,length = 255)
+    private String utente;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_biglietto", nullable = false)
@@ -97,11 +95,11 @@ public class Acquisto {
         this.stato = stato;
     }
 
-    public Utente getUtente() {
+    public String getUtente() {
         return utente;
     }
 
-    public void setUtente(Utente utente) {
+    public void setUtente(String utente) {
         this.utente = utente;
     }
 

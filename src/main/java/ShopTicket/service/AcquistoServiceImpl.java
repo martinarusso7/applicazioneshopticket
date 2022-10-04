@@ -29,7 +29,7 @@ public class AcquistoServiceImpl implements AcquistoService {
     public Acquisto save(AcquistoDto prenotazioneDto){
         Acquisto p = new Acquisto(prenotazioneDto.getOra(),prenotazioneDto.getStato());
         p.setBiglietto(bigliettoRepository.findBy_Id(prenotazioneDto.getBiglietto()));
-        p.setUtente(utenteRepository.findbyId_utente(prenotazioneDto.getUtente()));
+        //p.setUtente(utenteRepository.findbyId_utente(prenotazioneDto.getUtente()));
         return acquistoRepository.save(p);
     }
 
@@ -38,7 +38,7 @@ public class AcquistoServiceImpl implements AcquistoService {
         return acquistoRepository.save(acquisto);
     }
 
-    public boolean acquisto_exist(long utente, long biglietto){
+    public boolean acquisto_exist(String utente, long biglietto){
         Acquisto acquisto = acquistoRepository.alreadyprenotato(utente,biglietto);
         if(acquisto != null)
             return true;
