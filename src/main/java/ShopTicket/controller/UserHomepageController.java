@@ -156,7 +156,7 @@ public class UserHomepageController {
 
                         user_key.setSaldo(saldo - biglietto.getCosto());
                         biglietto.setNum_posti_disponibili(biglietto.getNum_posti_disponibili() - 1);
-                        Acquisto acquisto = new Acquisto(Calendar.getInstance().getTime().toString(), "valido");
+                        Acquisto acquisto = new Acquisto(Calendar.getInstance().getTime().toString(), "valido",id_utente);
                         bigliettoRepository.save(biglietto);
                         user_keyRepository.save(user_key);
                         acquisto.setBiglietto(biglietto);
