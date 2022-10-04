@@ -146,7 +146,7 @@ public class UserHomepageController {
             User_Key user_key = user_keyService.loadUserByKey(id_utente);
 
             long idbiglie = id;
-            Biglietto biglietto = bigliettoService.loadBigliettoById(id);
+            Biglietto biglietto = bigliettoRepository.findBy_Id(id);
 
             if (!acquistoService.acquisto_exist(id_utente, idbiglie)) {
 
@@ -160,7 +160,6 @@ public class UserHomepageController {
                         bigliettoRepository.save(biglietto);
                         user_keyRepository.save(user_key);
                         acquisto.setBiglietto(biglietto);
-                        //acquisto.setId(id_utente);
                         acquistoRepository.save(acquisto);
 
                         return "redirect:/homepage/visualizza-biglietti-user/" + idevento + "?success0";
