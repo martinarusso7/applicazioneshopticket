@@ -76,8 +76,8 @@ public class AdminHomepageController {
     //Caricamento Homepage
     @GetMapping
     public String home_admin(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
 
             ArrayList<Evento> listaEventi = (ArrayList<Evento>) eventoRepository.findAll();
 
@@ -91,26 +91,26 @@ public class AdminHomepageController {
             model.addAttribute("listaEventi", listissima);
 
             return "home-admin-mia";
-        } else
-            return "redirect:/login";
+       // } else
+           // return "redirect:/login";
     }
 
 
     @GetMapping("/inserisci-evento")
     public String showaddevento(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
 
             return "inserisci-evento";
-        }
-        else return "redirect:/login";
+       // }
+        //else return "redirect:/login";
     }
 
 
     @PostMapping("/inserisci-evento")
     public String aggiungievento(@ModelAttribute("eventobiglietto") EventoBigliettoDto eventoBigliettoDto){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
 
             //Faccio così perchè altrimenti dava problemi con i campi del dto
             String nom = eventoBigliettoDto.getNome();
@@ -142,17 +142,17 @@ public class AdminHomepageController {
 
           //Ritorno alla pagine di inserimento corso con una notifica di corretto inserimento
           return "redirect:/home-admin/inserisci-evento?success0";
-        }
-        else
-            return "redirect:/login";
+       // }
+        //else
+          //  return "redirect:/login";
     }
 
 
     //Modifica di un corso esistente
     @GetMapping("modifica-evento/{id}")
     public String showmodificaevento(@PathVariable (value="id") long id,Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
 
             //Cerco il corso da modificare e lo carico insieme alle sue lezioni
             Evento evento = eventoRepository.findbyId(id);
@@ -162,14 +162,14 @@ public class AdminHomepageController {
             model.addAttribute("biglietti",biglietti);
 
             return "modifica-evento";
-        }
-        else return "redirect:/login";
+        //}
+        //else return "redirect:/login";
     }
 
     @PostMapping("modifica-evento")
     public String modificaevento(@ModelAttribute("evento")EventoDto eventoDto){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
             Evento evento = eventoRepository.findbyId(eventoDto.getId());
             //Controllo di aver modificato almeno uno dei tre campi del corso (nome,descrizione,urlimm) prima di aggiornarlo
             if(evento.getNome().equals(eventoDto.getNome()) & evento.getDescrizione().equals(eventoDto.getDescrizione()) & evento.getUrlimm().equals(eventoDto.getUrlimm())){
@@ -177,21 +177,21 @@ public class AdminHomepageController {
             }
             eventoService.aggiorna(eventoDto);
             return "redirect:/home-admin?success0";
-        }
-        return "redirect:/login";
+       // }
+        //return "redirect:/login";
 
     }
 
     @GetMapping("/elimina-evento/{id}")
     public String deleteevento(@PathVariable (value="id") long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
             //Cerco il corso da eliminare per id, passato dalla pagina web tramite click e lo elimino
             Evento evento = eventoRepository.findbyId(id);
             eventoRepository.delete(evento);
             return  "redirect:/home-admin?success1";
-        }
-        return "redorect:/login";
+        //}
+        //return "redorect:/login";
     }
 
 
@@ -200,8 +200,8 @@ public class AdminHomepageController {
     //Aggiunta di un biglietto ad un evento esistente o appena creato
     @GetMapping("/aggiungi-biglietto/{id}")
     public String addbiglietto(@ModelAttribute("biglietto")BigliettoDto bigliettoDto,@PathVariable (value="id") long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
             //Controllo se esiste già un biglietto che coincide per orario giorno e luogo con quello inserito
             if(bigliettoService.exist(bigliettoDto)){
                 return "redirect:/home-admin/modifica-evento/"+id+"?error0";
@@ -209,28 +209,28 @@ public class AdminHomepageController {
 
             else
                 bigliettoService.save(bigliettoDto);
-        }
+       // }
         return "redirect:/home-admin/modifica-evento/"+id+"?succes0";
 
     }
 
     @GetMapping("/elimina-biglietto/{id}/{idevento}")
     public String deletebiglietto(@PathVariable (value="id") long id,@PathVariable (value="idevento") long idevento){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
             Biglietto biglietto = bigliettoRepository.findBy_Id(id);
             bigliettoRepository.delete(biglietto);
 
             return  "redirect:/home-admin/visualizza-biglietti/"+idevento+"?succes0";
-        }
-        return "redirect:/login";
+       // }
+        //return "redirect:/login";
     }
 
     //Visualizzazione di tutte le lezioni relative ad un corso esistente
     @GetMapping("/visualizza-biglietti/{id}")
     public String showbiglietti(@PathVariable (value = "id") long id,Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
 
             //Visualizzo l'elenco delle leziioni relative ad un determinato corso, da questa pagina possono eliminare lezioni o modificare il corso
             Evento evento = eventoRepository.findbyId(id);
@@ -242,8 +242,8 @@ public class AdminHomepageController {
 
             return "visualizza-biglietti";
 
-        } else
-            return "redirect:/login";
+        //} else
+          //  return "redirect:/login";
     }
 
 

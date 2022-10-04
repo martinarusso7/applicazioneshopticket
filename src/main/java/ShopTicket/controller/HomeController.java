@@ -1,7 +1,9 @@
 package ShopTicket.controller;
 
 
+import ShopTicket.repository.EventoRepository;
 import org.keycloak.KeycloakSecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import java.util.Set;
 
 @Controller
 public class HomeController {
+
 
         private KeycloakSecurityContext getSecurityContext() {
         final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
