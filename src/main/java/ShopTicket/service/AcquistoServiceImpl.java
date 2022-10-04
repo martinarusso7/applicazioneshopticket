@@ -26,8 +26,8 @@ public class AcquistoServiceImpl implements AcquistoService {
     public AcquistoServiceImpl() {
     }
 
-    public Acquisto save(AcquistoDto prenotazioneDto){
-        Acquisto p = new Acquisto(prenotazioneDto.getOra(),prenotazioneDto.getStato());
+    public Acquisto save(AcquistoDto prenotazioneDto, String id_utente){
+        Acquisto p = new Acquisto(prenotazioneDto.getOra(),prenotazioneDto.getStato(), id_utente);
         p.setBiglietto(bigliettoRepository.findBy_Id(prenotazioneDto.getBiglietto()));
         //p.setUtente(utenteRepository.findbyId_utente(prenotazioneDto.getUtente()));
         return acquistoRepository.save(p);

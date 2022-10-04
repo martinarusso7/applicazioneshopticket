@@ -66,9 +66,10 @@ public class Acquisto {
 
     }
 
-    public Acquisto(String ora, String stato) {
+    public Acquisto(String ora, String stato, String utente) {
         this.ora = ora;
         this.stato = stato;
+        this.utente = utente;
     }
 
     public Long getId() {
