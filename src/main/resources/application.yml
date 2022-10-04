@@ -14,7 +14,7 @@ server:
   port: 8080
 
 keycloak:
-  realm: ShopTicketRealm
+  realm: ShopTicket
   resource: spring-boot-shopticket
   auth-server-url: https://shopticketkeycloak.azurewebsites.net/auth
   ssl-required: external
