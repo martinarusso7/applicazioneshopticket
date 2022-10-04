@@ -145,10 +145,10 @@ public class UserHomepageController {
             float saldo = user_keyService.loadUserByKey(id_utente).getSaldo();
             User_Key user_key = user_keyService.loadUserByKey(id_utente);
 
-            long idcors = id;
+            long idbiglie = id;
             Biglietto biglietto = bigliettoService.loadBigliettoById(id);
 
-            if (!acquistoService.acquisto_exist(id_utente, idcors)) {
+            if (!acquistoService.acquisto_exist(id_utente, idbiglie)) {
 
                 if (biglietto.getNum_posti_disponibili() > 0) {
 
@@ -160,7 +160,7 @@ public class UserHomepageController {
                         bigliettoService.saves(biglietto);
                         user_keyRepository.save(user_key);
                         acquisto.setBiglietto(biglietto);
-                        acquisto.setUtente(id_utente);
+                        //acquisto.setUtente(id_utente);
                         acquistoService.saves(acquisto);
 
                         return "redirect:/homepage/visualizza-biglietti-user/" + idevento + "?success0";
