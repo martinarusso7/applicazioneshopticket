@@ -2,25 +2,24 @@ package ShopTicket.controller;
 
 import ShopTicket.controller.dto.ListaAcquistiDto;
 import ShopTicket.controller.dto.SaldoDto;
+import ShopTicket.controller.dto.User_KeyDto;
 import ShopTicket.model.Acquisto;
 import ShopTicket.model.Biglietto;
 import ShopTicket.model.Evento;
 import ShopTicket.model.Utente;
-import ShopTicket.repository.BigliettoRepository;
-import ShopTicket.repository.EventoRepository;
-import ShopTicket.repository.AcquistoRepository;
-import ShopTicket.repository.UtenteRepository;
-import ShopTicket.service.AcquistoService;
-import ShopTicket.service.BigliettoService;
-import ShopTicket.service.EventoService;
-import ShopTicket.service.UserService;
+import ShopTicket.repository.*;
+import ShopTicket.service.*;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -60,36 +59,59 @@ public class UserHomepageController {
     @Autowired
     private AcquistoRepository acquistoRepository;
 
+    @Autowired
+    private User_KeyServiceImpl user_keyService;
+
+    @Autowired
+    private User_KeyRepository user_keyRepository;
+
+    private KeycloakSecurityContext getSecurityContext() {
+        final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+    }
+
+
     @GetMapping
     public String showHomepage(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
 
-            String email = auth.getName();
-            Utente utente = utenteRepository.findByEmail(email);
+            //String email = auth.getName();
+            //Utente utente = utenteRepository.findByEmail(email);
+
+        final String id = getSecurityContext().getToken().getPreferredUsername();
+        if(!(user_keyService.exists(id))){
+            User_KeyDto user_keyDto = new User_KeyDto(id,0);
+            user_keyService.save(user_keyDto);
+        }
 
             ArrayList<Evento> listaEventi = (ArrayList<Evento>) eventoRepository.findAll();
 
             //Nome utente e saldo mi servono per la navbar, la lista corsi per la visualizzazione dei corsi in homepage
             //Nome utente e saldo mi serviranno in tutte le pagine relative all'utente
+        final String nome = getSecurityContext().getToken().getName();
+        float saldo = user_keyService.loadUserByKey(id).getSaldo();
 
-            model.addAttribute("nome", utente.getNome());
-            model.addAttribute("saldo", utente.getSaldo());
+            model.addAttribute("nome", nome);
+            model.addAttribute("saldo", saldo);
             model.addAttribute("eventi", listaEventi);
 
             return "homemia";
-        } else return "redirect:/login";
+        //} else return "redirect:/login";
     }
 
 
     @GetMapping("/riepilogo-acquisti")
     public String viewacquisti(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("UTENTE"))) {
 
-            String email = auth.getName();
-            Utente utente = utenteRepository.findByEmail(email);
-            ArrayList<Acquisto> acquistissimi = acquistoRepository.findByIdUtente(utente.getId());
+           // String email = auth.getName();
+            //Utente utente = utenteRepository.findByEmail(email);
+        final String user_id = getSecurityContext().getToken().getPreferredUsername();
+        final String nome = getSecurityContext().getToken().getName();
+
+            ArrayList<Acquisto> acquistissimi = acquistoRepository.findByIdUtente(user_id);
             ArrayList<ListaAcquistiDto> acquisti = new ArrayList<ListaAcquistiDto>();
 
             ListaAcquistiDto prenotazione;
@@ -103,10 +125,13 @@ public class UserHomepageController {
             }
 
             model.addAttribute("prenotazioni", acquisti);
-            model.addAttribute("nome", utente.getNome());
-            model.addAttribute("saldo", utente.getSaldo());
+            model.addAttribute("nome", nome);
+            float saldo = user_keyService.loadUserByKey(user_id).getSaldo();
+            model.addAttribute("saldo", saldo);
             return "riepilogo-acquisti";
-        } else return "redirect:/login";
+
+
+        //} else return "redirect:/login";
     }
 
     @GetMapping("/effettua-acquisto/{id}/{idevento}")

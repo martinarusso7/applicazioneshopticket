@@ -10,6 +10,6 @@ public interface AcquistoService {
 
     Acquisto saves(Acquisto acquisto);
     boolean acquisto_exist(long utente,long biglietto);
-    ArrayList<Acquisto> loadAcquistobyid(Long id);
+    ArrayList<Acquisto> loadAcquistobyid(String id);
 
 }

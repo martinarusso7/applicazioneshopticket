@@ -46,7 +46,7 @@ public class AcquistoServiceImpl implements AcquistoService {
             return false;
     }
 
-    public ArrayList<Acquisto> loadAcquistobyid(Long id){
+    public ArrayList<Acquisto> loadAcquistobyid(String id){
         return acquistoRepository.findByIdUtente(id);
     }
 
