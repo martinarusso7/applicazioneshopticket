@@ -1,4 +1,4 @@
-package ShopTicket.controller;
+/*package ShopTicket.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -109,4 +109,4 @@ public class UserRegistrationController {
         return "redirect:/login?success0";
 
     }
-}
+}*/
