@@ -1,5 +1,6 @@
-/*package ShopTicket.controller;
+package ShopTicket.controller;
 
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ShopTicket.service.UserService;
 
 import ShopTicket.controller.dto.UserRegistrationDto;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -36,6 +42,8 @@ public class UserRegistrationController {
     public String registerUserAccount(@ModelAttribute("utente") UserRegistrationDto registrationDto) {
 
         registrationDto.setRuoli("UTENTE");
+        final String id_key = getSecurityContext().getToken().getId();
+
 
         //Verifico che la mail inserita non sia già associata ad un account
         if (utenteService.email_exists(registrationDto)) {
@@ -105,8 +113,14 @@ public class UserRegistrationController {
         if(!psw.equals(cpsw)) {
             return "redirect:/registration?error4";
         }
-        utenteService.save(registrationDto);
+        utenteService.saves(id_key,registrationDto);
         return "redirect:/login?success0";
 
     }
-}*/
+
+
+    private KeycloakSecurityContext getSecurityContext() {
+        final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+    }
+}
